@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wildwood Zoo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">🦁 Wildwood Zoo</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#animals">Animals</a></li>
+        <li><a href="#exhibits">Exhibits</a></li>
+        <li><a href="#visit">Visit</a></li>
+        <li><a href="#tickets" class="btn-nav">Buy Tickets</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Welcome to Wildwood Zoo</h1>
+      <p>Discover the wonders of the animal kingdom — up close and personal.</p>
+      <a href="#animals" class="btn-primary">Explore Animals</a>
+      <a href="#tickets" class="btn-secondary">Get Tickets</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Animals</span></div>
+    <div class="stat"><span class="stat-num">80</span><span class="stat-label">Species</span></div>
+    <div class="stat"><span class="stat-num">12</span><span class="stat-label">Exhibits</span></div>
+    <div class="stat"><span class="stat-num">1M+</span><span class="stat-label">Visitors / Year</span></div>
+  </section>
+
+  <!-- ANIMALS -->
+  <section class="section" id="animals">
+    <h2 class="section-title">Meet Our Animals</h2>
+    <p class="section-sub">Filter by habitat and learn something new today.</p>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="savanna">Savanna</button>
+      <button class="filter-btn" data-filter="jungle">Jungle</button>
+      <button class="filter-btn" data-filter="arctic">Arctic</button>
+      <button class="filter-btn" data-filter="ocean">Ocean</button>
+    </div>
+
+    <div class="animal-grid" id="animal-grid"></div>
+  </section>
+
+  <!-- ANIMAL MODAL -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="animal-modal">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- EXHIBITS -->
+  <section class="section exhibits-section" id="exhibits">
+    <h2 class="section-title">Our Exhibits</h2>
+    <div class="exhibits-grid">
+      <div class="exhibit-card">
+        <div class="exhibit-icon">🌿</div>
+        <h3>Jungle Canopy</h3>
+        <p>Walk through a lush rainforest habitat and spot exotic birds, primates, and reptiles.</p>
+      </div>
+      <div class="exhibit-card">
+        <div class="exhibit-icon">🏔️</div>
+        <h3>Arctic Tundra</h3>
+        <p>Experience the frozen north with polar bears, arctic foxes, and snowy owls.</p>
+      </div>
+      <div class="exhibit-card">
+        <div class="exhibit-icon">🌊</div>
+        <h3>Ocean World</h3>
+        <p>Dive into our massive aquarium featuring sharks, rays, and colorful coral reefs.</p>
+      </div>
+      <div class="exhibit-card">
+        <div class="exhibit-icon">🌅</div>
+        <h3>African Savanna</h3>
+        <p>Roam the open plains alongside lions, elephants, and giraffes on our safari experience.</p>
+      </div>
+      <div class="exhibit-card">
+        <div class="exhibit-icon">🦋</div>
+        <h3>Butterfly Garden</h3>
+        <p>Stroll through thousands of free-flying butterflies in a tropical paradise.</p>
+      </div>
+      <div class="exhibit-card">
+        <div class="exhibit-icon">🐍</div>
+        <h3>Reptile House</h3>
+        <p>Get up close with the world's most fascinating reptiles and amphibians.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="section visit-section" id="visit">
+    <div class="visit-grid">
+      <div class="visit-info">
+        <h2>Plan Your Visit</h2>
+        <div class="info-block">
+          <h3>🕘 Hours</h3>
+          <ul>
+            <li>Monday – Friday: 9:00 AM – 6:00 PM</li>
+            <li>Saturday – Sunday: 8:00 AM – 8:00 PM</li>
+            <li>Holidays: 10:00 AM – 5:00 PM</li>
+          </ul>
+        </div>
+        <div class="info-block">
+          <h3>📍 Location</h3>
+          <p>123 Wildwood Drive, Forest City, FC 45678</p>
+        </div>
+        <div class="info-block">
+          <h3>📞 Contact</h3>
+          <p>Phone: (555) 123-4567</p>
+          <p>Email: hello@wildwoodzoo.com</p>
+        </div>
+      </div>
+      <div class="visit-map">
+        <div class="map-placeholder">
+          <span>🗺️</span>
+          <p>Interactive map coming soon</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKETS -->
+  <section class="section tickets-section" id="tickets">
+    <h2 class="section-title">Tickets & Pricing</h2>
+    <div class="ticket-grid">
+      <div class="ticket-card">
+        <div class="ticket-type">Child</div>
+        <div class="ticket-price">$14<span>/person</span></div>
+        <ul>
+          <li>Ages 3–12</li>
+          <li>General Admission</li>
+          <li>All Exhibits Included</li>
+          <li>Free Kids Activity Map</li>
+        </ul>
+        <a href="#" class="btn-primary">Buy Now</a>
+      </div>
+      <div class="ticket-card featured">
+        <div class="ticket-badge">Most Popular</div>
+        <div class="ticket-type">Adult</div>
+        <div class="ticket-price">$24<span>/person</span></div>
+        <ul>
+          <li>Ages 13–64</li>
+          <li>General Admission</li>
+          <li>All Exhibits Included</li>
+          <li>Zoo Guidebook</li>
+        </ul>
+        <a href="#" class="btn-primary">Buy Now</a>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-type">Senior</div>
+        <div class="ticket-price">$18<span>/person</span></div>
+        <ul>
+          <li>Ages 65+</li>
+          <li>General Admission</li>
+          <li>All Exhibits Included</li>
+          <li>Complimentary Shuttle</li>
+        </ul>
+        <a href="#" class="btn-primary">Buy Now</a>
+      </div>
+      <div class="ticket-card">
+        <div class="ticket-type">Family Pass</div>
+        <div class="ticket-price">$69<span>/family</span></div>
+        <ul>
+          <li>2 Adults + 3 Children</li>
+          <li>General Admission</li>
+          <li>All Exhibits Included</li>
+          <li>10% Gift Shop Discount</li>
+        </ul>
+        <a href="#" class="btn-primary">Buy Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">🦁 Wildwood Zoo</div>
+        <p>Inspiring a love of wildlife and nature since 1952.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#animals">Animals</a></li>
+          <li><a href="#exhibits">Exhibits</a></li>
+          <li><a href="#visit">Visit</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Conservation</h4>
+        <ul>
+          <li><a href="#">Adopt an Animal</a></li>
+          <li><a href="#">Wildlife Fund</a></li>
+          <li><a href="#">Education Programs</a></li>
+          <li><a href="#">Volunteer</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">Twitter</a>
+          <a href="#">YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Wildwood Zoo. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
