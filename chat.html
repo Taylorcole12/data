@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat with Lauren Tarshis!</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', cursive, sans-serif;
+      background: linear-gradient(135deg, #fff9c4 0%, #fce4ec 50%, #e3f2fd 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    /* ===== HEADER ===== */
+    .page-header {
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .page-header .books-emoji {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: .25rem;
+      animation: bounce 1.6s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    .page-header h1 {
+      font-size: clamp(1.5rem, 5vw, 2.4rem);
+      color: #c62828;
+      text-shadow: 2px 2px 0 #ff8a80;
+      line-height: 1.2;
+    }
+    .page-header p {
+      font-size: clamp(.9rem, 2.5vw, 1.1rem);
+      color: #5d4037;
+      margin-top: .35rem;
+    }
+
+    /* ===== CHAT WRAPPER ===== */
+    .chat-wrapper {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* ===== AUTHOR CARD ===== */
+    .author-card {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      background: #fff;
+      border-radius: 18px;
+      padding: .75rem 1.1rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      margin-bottom: 1rem;
+      border: 3px solid #ef9a9a;
+    }
+    .author-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ef5350, #ff8a80);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.9rem;
+      flex-shrink: 0;
+      border: 3px solid #c62828;
+    }
+    .author-info .name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #c62828;
+    }
+    .author-info .title {
+      font-size: .82rem;
+      color: #795548;
+    }
+    .online-dot {
+      width: 11px;
+      height: 11px;
+      background: #66bb6a;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .4; }
+    }
+
+    /* ===== MESSAGE AREA ===== */
+    .messages {
+      flex: 1;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.10);
+      padding: 1rem;
+      overflow-y: auto;
+      min-height: 320px;
+      max-height: 52vh;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      border: 3px solid #ffccbc;
+      margin-bottom: .85rem;
+    }
+
+    /* ===== INDIVIDUAL MESSAGES ===== */
+    .msg {
+      display: flex;
+      align-items: flex-end;
+      gap: .6rem;
+      animation: fadeUp .3s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .msg.lauren { flex-direction: row; }
+    .msg.user   { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ef5350, #ff8a80);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      border: 2px solid #c62828;
+    }
+    .msg.user .msg-avatar {
+      background: linear-gradient(135deg, #42a5f5, #90caf9);
+      border-color: #1565c0;
+    }
+
+    .bubble {
+      max-width: 78%;
+      padding: .7rem 1rem;
+      border-radius: 18px;
+      font-size: clamp(.9rem, 2.5vw, 1.05rem);
+      line-height: 1.5;
+    }
+    .msg.lauren .bubble {
+      background: #fff3e0;
+      border: 2px solid #ffcc80;
+      border-bottom-left-radius: 4px;
+      color: #3e2723;
+    }
+    .msg.user .bubble {
+      background: #e3f2fd;
+      border: 2px solid #90caf9;
+      border-bottom-right-radius: 4px;
+      color: #0d47a1;
+    }
+
+    /* ===== TYPING INDICATOR ===== */
+    .typing-indicator {
+      display: none;
+      align-items: flex-end;
+      gap: .6rem;
+    }
+    .typing-indicator.show { display: flex; }
+    .typing-dots {
+      background: #fff3e0;
+      border: 2px solid #ffcc80;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      padding: .65rem 1rem;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .typing-dots span {
+      width: 8px;
+      height: 8px;
+      background: #ef5350;
+      border-radius: 50%;
+      animation: dot-blink 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: .2s; }
+    .typing-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes dot-blink {
+      0%, 80%, 100% { transform: scale(1); opacity: .5; }
+      40%           { transform: scale(1.3); opacity: 1; }
+    }
+
+    /* ===== INPUT AREA ===== */
+    .input-area {
+      display: flex;
+      gap: .6rem;
+      align-items: center;
+    }
+    .input-area input {
+      flex: 1;
+      padding: .85rem 1.1rem;
+      border-radius: 50px;
+      border: 3px solid #ef9a9a;
+      font-size: clamp(.95rem, 2.5vw, 1.1rem);
+      font-family: inherit;
+      outline: none;
+      background: #fff;
+      color: #3e2723;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .input-area input:focus {
+      border-color: #c62828;
+      box-shadow: 0 0 0 4px rgba(198,40,40,.12);
+    }
+    .input-area input::placeholder { color: #bcaaa4; }
+    .send-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #ef5350, #c62828);
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .15s, background .2s;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(198,40,40,.35);
+    }
+    .send-btn:hover  { background: linear-gradient(135deg, #c62828, #b71c1c); transform: scale(1.08); }
+    .send-btn:active { transform: scale(.95); }
+
+    /* ===== QUICK IDEAS ===== */
+    .quick-ideas {
+      margin-bottom: .7rem;
+    }
+    .quick-ideas p {
+      font-size: .82rem;
+      color: #795548;
+      margin-bottom: .4rem;
+      text-align: center;
+    }
+    .idea-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      justify-content: center;
+    }
+    .chip {
+      background: #fff;
+      border: 2px solid #ef9a9a;
+      border-radius: 50px;
+      padding: .35rem .85rem;
+      font-size: .82rem;
+      font-family: inherit;
+      color: #c62828;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .chip:hover {
+      background: #ef5350;
+      color: #fff;
+      border-color: #ef5350;
+    }
+
+    /* ===== FOOTER NOTE ===== */
+    .footer-note {
+      text-align: center;
+      font-size: .75rem;
+      color: #bcaaa4;
+      margin-top: .6rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <span class="books-emoji">📚</span>
+    <h1>I Survived — Book Ideas!</h1>
+    <p>Tell Lauren Tarshis your amazing book idea!</p>
+  </div>
+
+  <div class="chat-wrapper">
+
+    <!-- Author Card -->
+    <div class="author-card">
+      <div class="author-avatar">✍️</div>
+      <div class="author-info">
+        <div class="name">Lauren Tarshis</div>
+        <div class="title"><span class="online-dot"></span>Author of the <em>I Survived</em> series &middot; Ready to chat!</div>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="messages" id="messages">
+      <div class="msg lauren">
+        <div class="msg-avatar">✍️</div>
+        <div class="bubble">
+          Hi there! I'm Lauren Tarshis — I write the <strong>I Survived</strong> books about amazing kids who survive incredible disasters! 🌊🌋⚡<br><br>
+          Tell me your book idea and I'll see if we can write it together! What disaster or adventure do you think a kid should survive?
+        </div>
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="typing-indicator" id="typing-indicator">
+      <div class="msg-avatar" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ef5350,#ff8a80);display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:2px solid #c62828;flex-shrink:0;">✍️</div>
+      <div class="typing-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Quick idea chips -->
+    <div class="quick-ideas">
+      <p>Need an idea? Try one of these:</p>
+      <div class="idea-chips">
+        <button class="chip" onclick="sendChip(this)">🦈 Giant shark attack</button>
+        <button class="chip" onclick="sendChip(this)">🌪️ Super tornado</button>
+        <button class="chip" onclick="sendChip(this)">🐊 Swamp with alligators</button>
+        <button class="chip" onclick="sendChip(this)">🌋 Volcano eruption</button>
+        <button class="chip" onclick="sendChip(this)">🏔️ Avalanche on a mountain</button>
+        <button class="chip" onclick="sendChip(this)">🦁 Safari with lions</button>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="input-area">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Type your book idea here..."
+        maxlength="200"
+        autocomplete="off"
+      />
+      <button class="send-btn" id="send-btn" onclick="sendMessage()" aria-label="Send">
+        &#9658;
+      </button>
+    </div>
+
+    <div class="footer-note">Press Enter or tap the button to send your idea!</div>
+
+  </div>
+
+  <script>
+    'use strict';
+
+    // Conversation history sent to the API (excludes the initial greeting)
+    const conversationHistory = [];
+
+    function addMessage(text, sender) {
+      const messages = document.getElementById('messages');
+      const msg = document.createElement('div');
+      msg.className = `msg ${sender}`;
+
+      const avatar = document.createElement('div');
+      avatar.className = 'msg-avatar';
+      avatar.textContent = sender === 'lauren' ? '✍️' : '😊';
+      if (sender === 'user') {
+        avatar.style.background = 'linear-gradient(135deg, #42a5f5, #90caf9)';
+        avatar.style.borderColor = '#1565c0';
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+
+      msg.appendChild(avatar);
+      msg.appendChild(bubble);
+      messages.appendChild(msg);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showTyping(show) {
+      document.getElementById('typing-indicator').classList.toggle('show', show);
+      const msgs = document.getElementById('messages');
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('user-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      input.disabled = true;
+      document.getElementById('send-btn').disabled = true;
+
+      addMessage(text, 'user');
+      conversationHistory.push({ role: 'user', content: text });
+
+      showTyping(true);
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: conversationHistory }),
+        });
+
+        if (!response.ok) throw new Error('Server error');
+
+        const data = await response.json();
+        const reply = data.reply || "Wow, I love that idea so much!";
+
+        showTyping(false);
+        addMessage(reply, 'lauren');
+        conversationHistory.push({ role: 'assistant', content: reply });
+      } catch (err) {
+        showTyping(false);
+        addMessage("Oh my goodness, I got so excited about your idea that my computer froze! Please try again! 😄", 'lauren');
+        // Remove the failed user message from history
+        conversationHistory.pop();
+      }
+
+      input.disabled = false;
+      document.getElementById('send-btn').disabled = false;
+      input.focus();
+    }
+
+    function sendChip(btn) {
+      const idea = btn.textContent.trim();
+      document.getElementById('user-input').value = idea;
+      sendMessage();
+    }
+
+    // Send on Enter key
+    document.getElementById('user-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+
+</body>
+</html>
