@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Your Zoo!</title>
+  <link rel="stylesheet" href="game.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- TOP BAR -->
+    <header id="top-bar">
+      <div class="zoo-brand">
+        <span class="zoo-brand-icon">🦁</span>
+        <span id="zoo-name-display">My Zoo</span>
+        <button id="rename-btn" title="Rename your zoo">✏️</button>
+      </div>
+      <div class="hud-stats">
+        <div class="hud-item">
+          <span class="hud-label">Money</span>
+          <span class="hud-value" id="money">$5,000</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Day</span>
+          <span class="hud-value" id="day">1</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Visitors Today</span>
+          <span class="hud-value" id="visitors">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Happiness</span>
+          <span class="hud-value" id="happiness">80%</span>
+        </div>
+      </div>
+      <div class="speed-controls">
+        <button class="speed-btn" id="pause-btn" title="Pause">⏸</button>
+        <button class="speed-btn active" id="play-btn" title="Normal speed">▶</button>
+        <button class="speed-btn" id="fast-btn" title="Fast forward">⏩</button>
+      </div>
+      <a href="index.html" class="back-link">← Zoo Website</a>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <div id="game-layout">
+
+      <!-- LEFT: BUILD PANEL -->
+      <aside id="build-panel">
+        <div class="panel-title">Build Menu</div>
+
+        <div class="build-section">
+          <div class="build-section-title">Paths &amp; Amenities</div>
+          <button class="build-btn" data-type="path" data-cost="25">
+            <span class="bi">🟫</span>
+            <span class="bl">Path</span>
+            <span class="bc">$25</span>
+          </button>
+          <button class="build-btn" data-type="bench" data-cost="100">
+            <span class="bi">🪑</span>
+            <span class="bl">Bench</span>
+            <span class="bc">$100</span>
+          </button>
+          <button class="build-btn" data-type="food_stand" data-cost="400">
+            <span class="bi">🍖</span>
+            <span class="bl">Food Stand</span>
+            <span class="bc">$400</span>
+          </button>
+          <button class="build-btn" data-type="gift_shop" data-cost="600">
+            <span class="bi">🎁</span>
+            <span class="bl">Gift Shop</span>
+            <span class="bc">$600</span>
+          </button>
+        </div>
+
+        <div class="build-section">
+          <div class="build-section-title">Enclosures</div>
+          <button class="build-btn" data-type="small_enc" data-cost="300">
+            <span class="bi">🔵</span>
+            <span class="bl">Small Enc.</span>
+            <span class="bc">$300</span>
+          </button>
+          <button class="build-btn" data-type="medium_enc" data-cost="700">
+            <span class="bi">🟡</span>
+            <span class="bl">Medium Enc.</span>
+            <span class="bc">$700</span>
+          </button>
+          <button class="build-btn" data-type="large_enc" data-cost="1,500">
+            <span class="bi">🔴</span>
+            <span class="bl">Large Enc.</span>
+            <span class="bc">$1,500</span>
+          </button>
+        </div>
+
+        <div class="build-section">
+          <div class="build-section-title">Tools</div>
+          <button class="build-btn demolish-btn" data-type="demolish" data-cost="0">
+            <span class="bi">🗑️</span>
+            <span class="bl">Demolish</span>
+            <span class="bc">Free</span>
+          </button>
+        </div>
+
+        <div class="build-hint" id="build-hint">
+          Click a button above, then click a grid cell to build.
+        </div>
+      </aside>
+
+      <!-- CENTER: GRID -->
+      <main id="grid-area">
+        <div id="zoo-grid"></div>
+        <div id="grid-tooltip"></div>
+      </main>
+
+      <!-- RIGHT: INFO PANEL -->
+      <aside id="info-panel">
+        <div class="panel-title">Zoo Stats</div>
+        <div id="overview-stats"></div>
+
+        <div class="panel-title" style="margin-top:1.25rem">Activity Log</div>
+        <div id="log-scroll">
+          <ul id="log-list"></ul>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- ENCLOSURE MODAL -->
+  <div id="enc-modal-overlay" class="modal-overlay">
+    <div id="enc-modal" class="game-modal">
+      <button class="game-modal-close" id="enc-modal-close">&times;</button>
+      <div id="enc-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- RENAME MODAL -->
+  <div id="name-modal-overlay" class="modal-overlay">
+    <div class="game-modal" style="max-width:380px">
+      <h3 class="modal-heading">Name Your Zoo</h3>
+      <input type="text" id="zoo-name-input" class="name-input" maxlength="30" placeholder="My Awesome Zoo" />
+      <button id="zoo-name-save" class="btn-save">Save Name</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
