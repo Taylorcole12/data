@@ -431,6 +431,167 @@ aside {
   margin: .5rem 0;
 }
 
+/* ===== HUNGRY ENCLOSURE ===== */
+.cell-hungry {
+  border: 2px solid #ff9500 !important;
+  animation: hungerPulse 2s ease-in-out infinite;
+}
+@keyframes hungerPulse {
+  0%, 100% { border-color: #ff9500; }
+  50%       { border-color: #ff6b00; box-shadow: 0 0 8px rgba(255,149,0,.5); }
+}
+
+/* ===== FEED ROW IN MODAL ===== */
+.enc-feed-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .5rem .75rem;
+  border-radius: 7px;
+  margin-bottom: .9rem;
+  font-size: .83rem;
+  gap: .75rem;
+}
+.enc-hungry { background: rgba(255,149,0,.15); border: 1px solid rgba(255,149,0,.4); color: #ffb347; }
+.enc-fed    { background: rgba(81,207,102,.1);  border: 1px solid rgba(81,207,102,.3); color: #a3e4b7; }
+.feed-btn {
+  background: #2d6a4f;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  padding: .3rem .8rem;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.feed-btn:hover:not(.disabled) { background: #40916c; }
+.feed-btn.disabled { opacity: .4; cursor: not-allowed; }
+
+/* ===== ANIMAL FACT ===== */
+.animal-fact {
+  background: rgba(244,162,97,.1);
+  border: 1px solid rgba(244,162,97,.3);
+  border-radius: 8px;
+  padding: .6rem .85rem;
+  font-size: .8rem;
+  color: #f4c98a;
+  margin-bottom: .9rem;
+  line-height: 1.5;
+}
+
+/* ===== OVERVIEW WARN ROW ===== */
+.ov-stat.warn span { color: #ffb347; }
+.ov-stat.warn span:last-child { color: #ff9500; }
+
+/* ===== MATH CHALLENGE MODAL ===== */
+.math-modal {
+  max-width: 500px;
+  text-align: center;
+  background: #0d1f2d;
+  border-color: #f4a261;
+}
+.math-star { font-size: 2.5rem; margin-bottom: .25rem; }
+.math-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #f4a261;
+  margin-bottom: .35rem;
+}
+.math-bonus-badge {
+  display: inline-block;
+  background: rgba(81,207,102,.15);
+  border: 1px solid #51cf66;
+  color: #a3e4b7;
+  border-radius: 50px;
+  padding: .2rem .9rem;
+  font-size: .82rem;
+  margin-bottom: 1.25rem;
+}
+.math-instruction {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: .85rem;
+  line-height: 1.5;
+}
+.math-display {
+  font-size: 2rem;
+  line-height: 1.6;
+  background: rgba(255,255,255,.05);
+  border-radius: 10px;
+  padding: .75rem 1rem;
+  margin-bottom: 1.25rem;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .15rem;
+  letter-spacing: .1rem;
+}
+.math-choices {
+  display: flex;
+  justify-content: center;
+  gap: .6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.math-choice-btn {
+  width: 64px;
+  height: 64px;
+  background: rgba(255,255,255,.08);
+  border: 2px solid rgba(255,255,255,.2);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all .15s;
+}
+.math-choice-btn:hover:not(:disabled) {
+  background: rgba(244,162,97,.25);
+  border-color: #f4a261;
+  transform: scale(1.1);
+}
+.math-choice-btn.correct { background: rgba(81,207,102,.35) !important; border-color: #51cf66 !important; }
+.math-choice-btn.wrong   { background: rgba(255,107,107,.2)  !important; border-color: #ff6b6b !important; opacity: .5; }
+.math-feedback {
+  font-size: 1rem;
+  font-weight: 700;
+  min-height: 1.5rem;
+  margin-bottom: .75rem;
+  border-radius: 8px;
+  padding: .4rem .75rem;
+}
+.math-feedback.correct { background: rgba(81,207,102,.15); color: #a3e4b7; }
+.math-feedback.wrong   { background: rgba(255,107,107,.15); color: #ffaaaa; }
+.math-continue-btn {
+  display: block;
+  background: #2d6a4f;
+  border: none;
+  color: #fff;
+  padding: .65rem 2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 0 auto .5rem;
+  transition: background .2s;
+}
+.math-continue-btn:hover { background: #40916c; }
+.math-skip-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.3);
+  font-size: .78rem;
+  cursor: pointer;
+  transition: color .2s;
+}
+.math-skip-btn:hover { color: rgba(255,255,255,.6); }
+
 /* ===== SCROLLBARS ===== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: rgba(255,255,255,.04); }
