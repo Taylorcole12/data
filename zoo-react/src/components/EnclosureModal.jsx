@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CELL_DEFS, ANIMALS, HABITATS, HUNGER_DAYS } from '../data.js';
+import { CELL_DEFS, ANIMALS, HABITATS, FOODS } from '../data.js';
 
 export default function EnclosureModal({ state, dispatch }) {
   const { selectedCell, grid, day, money } = state;
@@ -8,11 +8,11 @@ export default function EnclosureModal({ state, dispatch }) {
   const def  = CELL_DEFS[cell.type];
 
   const [habitatFilter, setHabitatFilter] = useState('all');
+  const [showFoodPicker, setShowFoodPicker] = useState(false);
 
   if (!def?.encSize) return null;
 
-  const hungry    = cell.animals.length > 0 && (day - cell.fedDay) >= HUNGER_DAYS;
-  const feedCost  = cell.animals.length * 8;
+  const hungry = cell.animals.length > 0 && (day - cell.fedDay) >= (cell.fedHungerDays ?? 4);
   const upkeep    = def.dailyCost + cell.animals.reduce((s, id) => s + (ANIMALS.find(a => a.id === id)?.dailyCost || 0), 0);
   const factAnimal = cell.animals.length > 0 ? ANIMALS.find(a => a.id === cell.animals[Math.floor(Math.random() * cell.animals.length)]) : null;
 
@@ -31,19 +31,45 @@ export default function EnclosureModal({ state, dispatch }) {
         <h2 className="modal-title">{def.label}</h2>
         <p className="modal-sub">Capacity: {cell.animals.length}/{def.capacity} · Upkeep: ${upkeep}/day</p>
 
-        {/* Hunger status */}
+        {/* Hunger status + food picker */}
         <div className={`feed-row ${hungry ? 'is-hungry' : 'is-fed'}`}>
-          <span>{hungry ? `⚠️ Animals are hungry! (${day - cell.fedDay} days since fed)` : `✅ Well-fed (${day - cell.fedDay} day${day - cell.fedDay !== 1 ? 's' : ''} ago)`}</span>
+          <span>
+            {hungry
+              ? `⚠️ Animals are hungry! (${day - cell.fedDay} days since fed)`
+              : `✅ Well-fed — ${(cell.fedHungerDays ?? 4) - (day - cell.fedDay)} day(s) of food left`}
+          </span>
           {cell.animals.length > 0 && (
-            <button
-              className={`feed-btn${money < feedCost ? ' disabled' : ''}`}
-              disabled={money < feedCost}
-              onClick={() => dispatch({ type: 'FEED_ENC', r, c })}
-            >
-              Feed (${feedCost})
+            <button className="feed-btn" onClick={() => setShowFoodPicker(v => !v)}>
+              {showFoodPicker ? 'Cancel' : '🍽️ Feed Animals'}
             </button>
           )}
         </div>
+
+        {showFoodPicker && cell.animals.length > 0 && (
+          <div className="food-picker">
+            <div className="food-picker-title">Choose food for {cell.animals.length} animal{cell.animals.length > 1 ? 's' : ''}:</div>
+            <div className="food-grid">
+              {FOODS.map(food => {
+                const total    = food.costPerAnimal * cell.animals.length;
+                const canAfford = money >= total;
+                return (
+                  <button
+                    key={food.id}
+                    className={`food-card${!canAfford ? ' disabled' : ''}`}
+                    disabled={!canAfford}
+                    onClick={() => { dispatch({ type: 'FEED_ENC', r, c, foodId: food.id }); setShowFoodPicker(false); }}
+                  >
+                    <span className="fc-emoji">{food.emoji}</span>
+                    <span className="fc-name">{food.name}</span>
+                    <span className="fc-desc">{food.desc}</span>
+                    <span className="fc-days">Lasts {food.hungerDays} days</span>
+                    <span className={`fc-cost${!canAfford ? ' cant' : ''}`}>${total.toLocaleString()} total</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Current animals */}
         <div className="current-animals">
