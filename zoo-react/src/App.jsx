@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useRef } from 'react';
 import { reducer, initialState } from './reducer.js';
-import { TICK_MS, MATH_EVERY, generateMathChallenge } from './data.js';
+import { TICK_MS } from './data.js';
 import TopBar from './components/TopBar.jsx';
 import BuildPanel from './components/BuildPanel.jsx';
 import ZooGrid from './components/ZooGrid.jsx';
@@ -20,13 +20,6 @@ export default function App() {
     tickRef.current = setInterval(() => dispatch({ type: 'TICK' }), TICK_MS[state.speed]);
     return () => clearInterval(tickRef.current);
   }, [state.paused, state.speed]);
-
-  // Math challenge trigger
-  useEffect(() => {
-    if (state.day > 1 && state.day % MATH_EVERY === 0) {
-      setTimeout(() => dispatch({ type: 'SHOW_MATH', challenge: generateMathChallenge() }), 600);
-    }
-  }, [state.day]);
 
   // Keyboard shortcut: Escape clears build mode
   useEffect(() => {

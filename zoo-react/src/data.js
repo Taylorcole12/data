@@ -4,8 +4,19 @@ export const TICKET_PRICE = 15;
 export const START_MONEY  = 5000;
 export const HUNGER_DAYS  = 4;
 export const MATH_BONUS   = 200;
-export const MATH_EVERY   = 5;
+export const MATH_EVERY_ANIMALS = 5; // challenge fires every N animals added
+
+// ===== FOOD CATALOG =====
+export const FOODS = [
+  { id: 'hay',     name: 'Hay & Grass',   emoji: '🌾', costPerAnimal: 5,  hungerDays: 4, desc: 'Basic daily feed — gets the job done!' },
+  { id: 'veggies', name: 'Fresh Veggies', emoji: '🥦', costPerAnimal: 8,  hungerDays: 5, desc: 'Herbivores love crunchy vegetables!' },
+  { id: 'fruit',   name: 'Fruit Mix',     emoji: '🍎', costPerAnimal: 10, hungerDays: 5, desc: 'A favourite for primates and birds!' },
+  { id: 'fish',    name: 'Fresh Fish',    emoji: '🐟', costPerAnimal: 12, hungerDays: 6, desc: 'Perfect for aquatic and arctic animals!' },
+  { id: 'meat',    name: 'Raw Meat',      emoji: '🥩', costPerAnimal: 15, hungerDays: 6, desc: 'Carnivores go wild for this!' },
+  { id: 'premium', name: 'Premium Feast', emoji: '⭐', costPerAnimal: 28, hungerDays: 9, desc: 'The very best — keeps them full the longest!' },
+];
 export const TICK_MS      = { normal: 5000, fast: 1500 };
+export const HUNGER_DAYS  = 4; // default days before hungry
 
 // ===== HABITATS =====
 export const HABITATS = {

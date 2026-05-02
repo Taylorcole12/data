@@ -1,10 +1,11 @@
-import { CELL_DEFS, ANIMALS, HABITATS, HUNGER_DAYS, TICKET_PRICE, MATH_BONUS, pickWeather, initGrid } from './data.js';
+import { CELL_DEFS, ANIMALS, TICKET_PRICE, MATH_BONUS, MATH_EVERY_ANIMALS, FOODS, pickWeather, initGrid, generateMathChallenge } from './data.js';
 
 export const initialState = {
   money: 5000,
   day: 1,
   todayVisitors: 0,
   totalVisitors: 0,
+  totalAnimalsAdded: 0,
   happiness: 80,
   zooName: 'My Zoo',
   grid: initGrid(),
@@ -13,8 +14,8 @@ export const initialState = {
   speed: 'normal',
   weather: { emoji: '⛅', label: 'Cloudy', multiplier: 1.0 },
   log: ['🎉 Welcome! Build enclosures, add animals, grow your zoo!',
-        '💡 Animals get hungry every 4 days — click an enclosure to feed them.',
-        '⭐ Every 5 days a Math Challenge appears — earn $200 for correct answers!'],
+        '💡 Animals get hungry — click an enclosure to choose their food!',
+        '⭐ A Math Challenge appears after every 5 animals you add — earn $200!'],
   showEncModal: false,
   selectedCell: null,
   showMathModal: false,
@@ -36,7 +37,7 @@ function calcTick(state) {
       if (def.happinessBonus) { happyTotal += def.happinessBonus; happyItems++; }
 
       if (def.encSize && cell.animals.length > 0) {
-        const hungry = (state.day - cell.fedDay) >= HUNGER_DAYS;
+        const hungry = (state.day - cell.fedDay) >= (cell.fedHungerDays ?? 4);
         if (hungry) hungryCount++;
         for (const aid of cell.animals) {
           const a = ANIMALS.find(x => x.id === aid);
@@ -127,10 +128,15 @@ export function reducer(state, action) {
       const a    = ANIMALS.find(x => x.id === animalId);
       if (!a || state.money < a.cost || cell.animals.length >= def.capacity) return state;
       const newGrid = immutableGridUpdate(state.grid, r, c, old => ({ ...old, animals: [...old.animals, animalId] }));
+      const newTotal = state.totalAnimalsAdded + 1;
+      const triggerMath = newTotal % MATH_EVERY_ANIMALS === 0;
       return {
         ...state,
         money: state.money - a.cost,
         grid: newGrid,
+        totalAnimalsAdded: newTotal,
+        showMathModal: triggerMath ? true : state.showMathModal,
+        mathChallenge: triggerMath ? generateMathChallenge() : state.mathChallenge,
         log: [`Added ${a.emoji} ${a.name} for $${a.cost.toLocaleString()}. 🎓 ${a.fact}`, ...state.log].slice(0, 40),
       };
     }
@@ -153,16 +159,20 @@ export function reducer(state, action) {
     }
 
     case 'FEED_ENC': {
-      const { r, c } = action;
-      const cell     = state.grid[r][c];
-      const feedCost = cell.animals.length * 8;
-      if (state.money < feedCost) return state;
-      const newGrid = immutableGridUpdate(state.grid, r, c, old => ({ ...old, fedDay: state.day }));
+      const { r, c, foodId } = action;
+      const cell  = state.grid[r][c];
+      const food  = FOODS.find(f => f.id === foodId);
+      if (!food) return state;
+      const total = food.costPerAnimal * cell.animals.length;
+      if (state.money < total) return state;
+      const newGrid = immutableGridUpdate(state.grid, r, c, old => ({
+        ...old, fedDay: state.day, fedHungerDays: food.hungerDays,
+      }));
       return {
         ...state,
-        money: state.money - feedCost,
+        money: state.money - total,
         grid: newGrid,
-        log: [`Fed enclosure (${r + 1},${c + 1}) for $${feedCost}.`, ...state.log].slice(0, 40),
+        log: [`Fed enclosure with ${food.emoji} ${food.name} ($${total}) — full for ${food.hungerDays} days!`, ...state.log].slice(0, 40),
       };
     }
 

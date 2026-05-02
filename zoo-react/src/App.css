@@ -375,6 +375,35 @@ a { text-decoration: none; color: inherit; }
 }
 .save-btn:hover { background: var(--green-mid); }
 
+/* ===== FOOD PICKER ===== */
+.food-picker { margin-bottom: .85rem; }
+.food-picker-title {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .5px; color: var(--amber); margin-bottom: .55rem;
+}
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: .45rem;
+}
+.food-card {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  border-radius: 9px; padding: .6rem .45rem; gap: .15rem;
+  transition: all .15s; font-family: inherit;
+}
+.food-card:hover:not(.disabled) {
+  background: rgba(244,162,97,.12); border-color: var(--amber);
+  transform: translateY(-2px);
+}
+.food-card.disabled { opacity: .38; cursor: not-allowed; }
+.fc-emoji { font-size: 1.8rem; }
+.fc-name  { font-weight: 800; font-size: .78rem; color: var(--text); }
+.fc-desc  { font-size: .65rem; color: var(--muted); line-height: 1.35; }
+.fc-days  { font-size: .7rem; color: var(--green-pale); font-weight: 700; }
+.fc-cost  { font-size: .75rem; color: var(--amber); font-weight: 800; }
+.fc-cost.cant { color: #ff6b6b; }
+
 /* ===== SCROLLBARS ===== */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: rgba(255,255,255,.03); }
